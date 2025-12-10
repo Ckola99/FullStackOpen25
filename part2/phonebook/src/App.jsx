@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [isError, setError] = useState(false)
 
   useEffect(() => {
     personService
@@ -52,11 +55,19 @@ const App = () => {
 
       setPersons(updatedPersons);
       clearFormFields();
+      setNotification(`Added ${updatedPerson.name}`);
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     };
 
     const handleError = (error) => {
       console.error("Error processing contact:", error);
-      alert(`An error occurred while processing ${contactObject.name}.`);
+      setNotification(`Could not add/update ${contactObject.name}`);
+      setError(true);
+      setTimeout(() => {
+        setNotification(null);
+      }, 5000);
     }
 
 
@@ -88,10 +99,17 @@ const App = () => {
         .deletePerson(id)
         .then(() => {
           setPersons(persons.filter(p => p.id !== id));
+          setNotification(`Deleted ${person.name}`);
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
         })
         .catch(error => {
           console.error("Error deleting contact:", error);
-          alert(`An error occurred while deleting ${person.name}.`);
+          setNotification(`${person.name} contact has already been deleted.`);
+          setTimeout(() => {
+            setError(true);
+          }, 5000);
         });
     }
   }
@@ -105,6 +123,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} isError ={isError}/>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h3>add a new</h3>
       <PersonForm addContact={addContact} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
