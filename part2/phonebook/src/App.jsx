@@ -118,7 +118,9 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  console.log("All persons from APP: ", persons);
   const personsToShow = filter ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())) : persons
+  console.log("Persons to show from APP: ", personsToShow);
 
   return (
     <div>

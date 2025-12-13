@@ -1,6 +1,9 @@
 import React from 'react'
 
 const Persons = ({ personsToShow, handleDelete }) => {
+
+	console.log("Here are the people: ", personsToShow);
+	
 	return (
 		<div className="">
 			{personsToShow.map((person) =>

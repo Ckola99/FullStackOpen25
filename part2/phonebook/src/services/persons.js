@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const isProduction = import.meta.env.PROD
-const baseUrl = isProduction ? 'https://phonebook-backend-api.onrender.com' : '/api/persons'
+const baseUrl = isProduction ? 'https://phonebook-backend-api.onrender.com/api/persons' : '/api/persons'
 
 const getAll = async () => {
   const request =  axios.get(baseUrl)
