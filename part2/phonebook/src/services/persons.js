@@ -1,5 +1,7 @@
 import axios from "axios"
-const baseUrl = 'http://localhost:3001/persons'
+
+const isProduction = import.meta.env.PROD
+const baseUrl = isProduction ? 'http://localhost:3001/api/persons' : '/api/persons'
 
 const getAll = async () => {
   const request =  axios.get(baseUrl)
