@@ -6,7 +6,7 @@ const app = express()
 
 const allowedOrigins = [
 	'http://localhost:5173',
-	'https://full-stack-open25-jb10vd37o-ckola99s-projects.vercel.app'
+	'https://full-stack-open25.vercel.app/'
 ];
 
 const corsOptions = {
