@@ -63,8 +63,8 @@ const App = () => {
 
     const handleError = (error) => {
       console.error("Error processing contact:", error);
-      setNotification(`Could not add/update ${contactObject.name}`);
       setError(true);
+      setNotification(`ERROR: ${error.response.data.error}`);
       setTimeout(() => {
         setNotification(null);
       }, 5000);
