@@ -1,0 +1,24 @@
+{
+  "name": "phonebookbackend",
+  "version": "1.0.0",
+  "description": "a phonebook backend",
+  "repository": {
+    "type": "git",
+    "url": "https://fullstackopen.com/osa3/node_js_ja_express"
+  },
+  "license": "MIT",
+  "author": "Christopher Kola",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "cora": "^0.1.0",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "morgan": "^1.10.1"
+  }
+}
