@@ -12,16 +12,25 @@ mongoose.connect(url, { family: 4 })
 		console.log('error connecting to MongoDB:', error.message)
 	})
 
+const phonebookValidator = (v) => {
+	const formatRegex = /^\d{2,3}-\d+$/
+	return formatRegex.test(v) && v.length >= 8
+}
+
+
 const personSchema = new mongoose.Schema({
-	name : {
+	name: {
 		type: String,
 		minlength: 3,
 		required: true
 	},
-	number : {
+	number: {
 		type: String,
-		minlength: 10,
-		required: true
+		required: true,
+		validate: {
+			validator: phonebookValidator,
+			message: props => `${props.value} is not a valid phone number. The format must be XX-YYYYYYY or XXX-YYYYYYY and be at least 8 characters long.`
+		}
 	}
 })
 
