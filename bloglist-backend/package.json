@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env  NODE_ENV=test node --test"
   },
   "keywords": [],
   "author": "",
@@ -13,8 +13,13 @@
   "type": "commonjs",
   "description": "",
   "dependencies": {
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "lodash": "^4.17.21",
     "mongoose": "^9.0.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4"
   }
 }

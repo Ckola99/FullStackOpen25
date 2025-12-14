@@ -5,6 +5,7 @@ const logger = require('./utils/logger')
 const blogsRouter = require('./controllers/blogs')
 
 const app = express()
+const middleware = require('./utils/middleware')
 
 // --- Database Connection ---
 logger.info('connecting to', config.MONGODB_URI)
@@ -23,5 +24,8 @@ app.use(express.json()) // JSON parser for request body
 
 // Attach the router: all requests starting with /api/blogs go to blogsRouter
 app.use('/api/blogs', blogsRouter)
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
