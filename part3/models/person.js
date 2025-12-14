@@ -1,16 +1,8 @@
 const mongoose = require('mongoose')
+const config = require('../utils/config')
 
 mongoose.set('strictQuery', false)
-const url = process.env.MONGODB_URI
 
-
-mongoose.connect(url, { family: 4 })
-	.then(result => {
-		console.log('connected to MongoDB')
-	})
-	.catch((error) => {
-		console.log('error connecting to MongoDB:', error.message)
-	})
 
 const phonebookValidator = (v) => {
 	const formatRegex = /^\d{2,3}-\d+$/
@@ -22,7 +14,8 @@ const personSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		minlength: 3,
-		required: true
+		required: true,
+		unique: true
 	},
 	number: {
 		type: String,
