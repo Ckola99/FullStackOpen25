@@ -10,6 +10,7 @@ const userExtractor = require('./utils/middleware').userExtractor
 const app = express()
 const middleware = require('./utils/middleware')
 
+
 // --- Database Connection ---
 logger.info('connecting to', config.MONGODB_URI)
 
@@ -25,6 +26,7 @@ mongoose
 // --- Middleware Setup ---
 app.use(express.json()) // JSON parser for request body
 
+app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 // Attach the router: all requests starting with /api/blogs go to blogsRouter
 app.use('/api/blogs', middleware.tokenExtractor, userExtractor, blogsRouter)

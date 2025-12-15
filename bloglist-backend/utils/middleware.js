@@ -1,13 +1,12 @@
 const logger = require('./logger') // Assuming you adjust logger.js to export info/error
 const User = require('../models/user')
+jwt = require('jsonwebtoken')
+const morgan = require('morgan')
 
-const requestLogger = (request, response, next) => {
-	logger.info('Method:', request.method)
-	logger.info('Path:  ', request.path)
-	logger.info('Body:  ', request.body)
-	logger.info('---')
-	next()
-}
+morgan.token('body', (req) => JSON.stringify(req.body))
+const morganFormat = ':method :url :status :res[content-length] - :response-time ms :body'
+
+const requestLogger = morgan(morganFormat)
 
 const unknownEndpoint = (request, response) => {
 	response.status(404).send({ error: 'unknown endpoint' })
@@ -47,7 +46,7 @@ const tokenExtractor = (request, response, next) => {
 
 const userExtractor = async (request, response, next) => {
 	if (!request.token) {
-		return response.status(401).json({ error: 'token missimg' })
+		return response.status(401).json({ error: 'token missing' })
 	}
 
 	const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -70,5 +69,6 @@ module.exports = {
 	unknownEndpoint,
 	errorHandler,
 	tokenExtractor,
-	userExtractor
+	userExtractor,
+	requestLogger
 }
