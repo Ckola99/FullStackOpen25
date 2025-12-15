@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
 	{
@@ -18,13 +19,20 @@ const initialBlogs = [
 // Returns all blogs currently in the DB
 const blogsInDb = async () => {
 	const blogs = await Blog.find({})
-	
+
 	// Use .map(blog => blog.toJSON()) to ensure the Mongoose object is converted to a plain object
 	// that has the 'id' field instead of '_id' and '__v'
 	return blogs.map(blog => blog.toJSON())
 }
 
+const usersInDb = async () => {
+	const users = await User.find({})
+	return users.map(u => u.toJSON())
+}
+
+
 module.exports = {
 	initialBlogs,
-	blogsInDb
+	blogsInDb,
+	usersInDb
 }
