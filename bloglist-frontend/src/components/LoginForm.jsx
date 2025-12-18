@@ -5,12 +5,17 @@ const Login = ({ handleLogin, password, username, setPassword, setUsername }) =>
 		<div>
 			<form onSubmit={handleLogin}>
 				<div className="input">
-					username
-					<input type="text" value={username} onChange={({ target }) => setUsername(target.value)} />
+					<label htmlFor="username">
+						username
+					</label>
+					<input type="text" data-testid="username" value={username} onChange={({ target }) => setUsername(target.value)} />
+
 				</div>
 				<div className="input">
-					password
-					<input type="password" value={password} onChange={({ target }) => setPassword(target.value)} />
+					<label htmlFor="password">
+						password
+					</label>
+					<input type="password" data-testid="password" value={password} onChange={({ target }) => setPassword(target.value)} />
 				</div>
 				<button type="submit">login</button>
 			</form>
