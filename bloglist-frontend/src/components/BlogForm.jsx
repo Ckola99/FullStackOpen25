@@ -1,20 +1,22 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const BlogForm = ({ blogs, setBlogs, notify, onSuccess }) => {
+const BlogForm = ({ onSuccess, createBlog }) => {
 	const [title, setTitle] = useState('')
 	const [author, setAuthor] = useState('')
 	const [url, setUrl] = useState('')
 
-	const handleCreateBlog = async (event) => {
+	const handleCreateBlog = (event) => {
 		event.preventDefault()
 
-		const blogObject = { title, author, url }
-		const returnedBlog = await blogService.create(blogObject)
+		// Call the function passed via props
+		createBlog({
+			title: title,
+			author: author,
+			url: url
+		})
 
-		setBlogs(blogs.concat(returnedBlog))
-		notify(`a new blog ${title} by ${author} added`)
-
+		// Reset local state
 		setTitle('')
 		setAuthor('')
 		setUrl('')
@@ -26,15 +28,15 @@ const BlogForm = ({ blogs, setBlogs, notify, onSuccess }) => {
 		<form onSubmit={handleCreateBlog}>
 			<div>
 				title:
-				<input value={title} onChange={({ target }) => setTitle(target.value)} />
+				<input value={title} onChange={({ target }) => setTitle(target.value)} placeholder='title-input'/>
 			</div>
 			<div>
 				author:
-				<input value={author} onChange={({ target }) => setAuthor(target.value)} />
+				<input value={author} onChange={({ target }) => setAuthor(target.value)} placeholder='author-input'/>
 			</div>
 			<div>
 				url:
-				<input value={url} onChange={({ target }) => setUrl(target.value)} />
+				<input value={url} onChange={({ target }) => setUrl(target.value)} placeholder='url-input'/>
 			</div>
 			<button type="submit">create</button>
 		</form>

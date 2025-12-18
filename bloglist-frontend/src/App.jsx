@@ -28,7 +28,8 @@ const App = () => {
 	// ---------------- FETCH BLOGS ----------------
 	useEffect(() => {
 		blogService.getAll().then(blogs => {
-			setBlogs(blogs)
+			const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+			setBlogs(sortedBlogs)
 		})
 	}, [])
 
@@ -67,14 +68,37 @@ const App = () => {
 		const updatedBlog = {
 			...blog,
 			user: blog.user.id,
-			likes: blog.likes + 1
+			likes: blog.likes + 1,
 		}
 
 		const returnedBlog = await blogService.update(blog.id, updatedBlog)
+		returnedBlog.user = blog.user
 
-		setBlogs(blogs.map(b =>
-			b.id === blog.id ? returnedBlog : b
-		))
+		const updatedBlogs = blogs.map(b => b.id === blog.id ? returnedBlog : b)
+		setBlogs(updatedBlogs.sort((a, b) => b.likes - a.likes))
+	}
+
+	const deleteBlog = async (blog) => {
+		if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+			try {
+				await blogService.remove(blog.id)
+				setBlogs(blogs.filter(b => b.id !== blog.id))
+				notify(`Blog ${blog.title} was successfully deleted`, 'info')
+			} catch (exception) {
+				notify('Error: Could not delete the blog', 'error')
+			}
+		}
+	}
+
+	const addBlog = async (blogObject) => {
+		try {
+			const returnedBlog = await blogService.create(blogObject)
+			setBlogs(blogs.concat(returnedBlog))
+			notify(`a new blog ${blogObject.title} by ${blogObject.author} added`)
+			blogFormRef.current.toggleVisibility()
+		} catch (exception) {
+			notify('error adding blog', 'error')
+		}
 	}
 
 	return (
@@ -108,11 +132,12 @@ const App = () => {
 							setBlogs={setBlogs}
 							notify={notify}
 							onSuccess={() => blogFormRef.current.toggleVisibility()}
+							createBlog={addBlog}
 						/>
 					</Togglable>
 
 					{blogs.map(blog => (
-						<Blog key={blog.id} blog={blog} onLike={() => likeBlog(blog)} />
+						<Blog key={blog.id} blog={blog} onLike={() => likeBlog(blog)} onDelete = {() => deleteBlog(blog)} currentUser={user}/>
 					))}
 				</div>
 			)}
