@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "test": "cross-env  NODE_ENV=test node --test"
+    "test": "cross-env  NODE_ENV=test node --test",
+    "start:test": "cross-env NODE_ENV=test node --watch index.js"
   },
   "keywords": [],
   "author": "",
